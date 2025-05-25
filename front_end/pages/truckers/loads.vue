@@ -3,7 +3,7 @@
 <template>
     <TruckersHeader />
 
-    <div class="menu">
+    <div class="menu md:hidden">
         <TruckersBottomMenu />
     </div>
    
