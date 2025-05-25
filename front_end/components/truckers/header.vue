@@ -18,12 +18,16 @@ function getLimitedFullName(name, surname, maxLength = 10) {
             <TruckersSidebarMenu />
         </div>
         <div class="header py-4 px-5 flex items-center flex-1 justify-between shadow gap-4">
-            <div class="menu_btn bg-gray-100 flex items-center">
+            <div class="logotip md:hidden">
+                <NuxtImg width="60px" src="images/ChatGPT Image May 17, 2025, 06_06_51 PM.png"/>
+            </div>
+            <div class="menu_btn hidden md:block bg-gray-100 flex items-center">
                 <input type="text" class="outline-none px-2 font-bold" placeholder="Qidiruv">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
             </div>
+
             <div @click="profileBlock" class="profile flex items-center gap-4">
                 <div class="image cursor-pointer">
                     <NuxtImg src="images/ChatGPT Image May 25, 2025, 03_59_11 PM.png" />
