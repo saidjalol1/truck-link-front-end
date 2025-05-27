@@ -18,8 +18,8 @@ function getLimitedFullName(name, surname, maxLength = 10) {
             <TruckersSidebarMenu />
         </div>
         <div class="header py-4 px-5 flex items-center flex-1 justify-between md:justify-end shadow gap-4">
-            <div class="logotip md:hidden">
-                <NuxtImg width="60px" src="images/ChatGPT Image May 17, 2025, 06_06_51 PM.png"/>
+            <div class="logotip block md:hidden lg:hidded">
+                <NuxtImg  src="images/ChatGPT Image May 17, 2025, 06_06_51 PM.png"/>
             </div>
 
             <div @click="profileBlock" class="profile flex items-center gap-4">
@@ -71,6 +71,7 @@ function getLimitedFullName(name, surname, maxLength = 10) {
     </div>
 </template>
 <style scoped>
+
 .header{
     height: 70px;
     background-color: white
@@ -91,6 +92,10 @@ function getLimitedFullName(name, surname, maxLength = 10) {
 .image:hover{
     width: 36px;
     height: 36px;
+}
+.logotip{
+    width: 60px;
+    height: 60px;
 }
 img{
     width: 100%;
