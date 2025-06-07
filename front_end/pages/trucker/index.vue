@@ -5,25 +5,25 @@
     </div>
     <div class="w-full">
       <TruckersHeader />
-      <div class="filtration px-2 mt-2">
+      <div class="px-3 mt-2">
         <Filtration />
       </div>
 
       <!-- Results Summary -->
-      <div class="results-info px-2 py-2">
-        <p class="text-sm text-gray-600">
+      <div class="px-3">
+        <p class="text-xs text-gray-600">
           Showing {{ startItem }}-{{ endItem }} of {{ totalItems }} loads
         </p>
       </div>
 
-      <!-- Cards container -->
-      <div class="cards flex justify-start flex-wrap px-2 gap-4 w-full mb-6">
+      <!-- Cards container - Compact Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 px-3 mb-4">
         <LoadCard 
           v-for="(load, index) in paginatedLoads" 
           :key="`load-${currentPage}-${index}`"
           :load="load"
           @click="openModal(load)"
-          class="cursor-pointer hover:shadow-lg transition-shadow duration-200"
+          class="cursor-pointer hover:shadow-md transition-shadow duration-150"
         />
       </div>
 
@@ -35,55 +35,54 @@
         @accept="handleAcceptLoad"
       />
 
-      <!-- Pagination -->
-      <div class="pagination-container pb-6 px-2">
-        <div class="pagination">
+      <!-- Compact Pagination -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pb-4 px-3">
+        <div class="flex items-center gap-2">
           <!-- Previous button -->
           <button 
-            class="pagination-btn"
-            :class="{ 'disabled': currentPage === 1 }"
-            @click="goToPage(currentPage - 1)"
+            class="flex items-center px-2 py-1 text-xs border border-gray-300 bg-white rounded hover:bg-gray-50 hover:border-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
               <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
             </svg>
           </button>
 
           <!-- Page numbers -->
-          <div class="page-numbers">
+          <div class="flex items-center gap-1">
             <!-- First page -->
             <button 
               v-if="showFirstPage"
-              class="page-btn"
-              :class="{ 'active': currentPage === 1 }"
+              class="min-w-[28px] h-7 flex items-center justify-center text-xs border border-gray-300 bg-white rounded hover:bg-gray-50 hover:border-blue-400 transition-colors"
+              :class="{ 'bg-blue-500 border-blue-500 text-white hover:bg-blue-600': currentPage === 1 }"
               @click="goToPage(1)"
             >
               1
             </button>
 
             <!-- Left ellipsis -->
-            <span v-if="showLeftEllipsis" class="ellipsis">...</span>
+            <span v-if="showLeftEllipsis" class="px-1 text-xs text-gray-500">...</span>
 
             <!-- Visible page numbers -->
             <button 
               v-for="page in visiblePages" 
               :key="page"
-              class="page-btn"
-              :class="{ 'active': currentPage === page }"
+              class="min-w-[28px] h-7 flex items-center justify-center text-xs border border-gray-300 bg-white rounded hover:bg-gray-50 hover:border-blue-400 transition-colors"
+              :class="{ 'bg-blue-500 border-blue-500 text-white hover:bg-blue-600': currentPage === page }"
               @click="goToPage(page)"
             >
               {{ page }}
             </button>
 
             <!-- Right ellipsis -->
-            <span v-if="showRightEllipsis" class="ellipsis">...</span>
+            <span v-if="showRightEllipsis" class="px-1 text-xs text-gray-500">...</span>
 
             <!-- Last page -->
             <button 
               v-if="showLastPage"
-              class="page-btn"
-              :class="{ 'active': currentPage === totalPages }"
+              class="min-w-[28px] h-7 flex items-center justify-center text-xs border border-gray-300 bg-white rounded hover:bg-gray-50 hover:border-blue-400 transition-colors"
+              :class="{ 'bg-blue-500 border-blue-500 text-white hover:bg-blue-600': currentPage === totalPages }"
               @click="goToPage(totalPages)"
             >
               {{ totalPages }}
@@ -92,37 +91,36 @@
 
           <!-- Next button -->
           <button 
-            class="pagination-btn"
-            :class="{ 'disabled': currentPage === totalPages }"
-            @click="goToPage(currentPage + 1)"
+            class="flex items-center px-2 py-1 text-xs border border-gray-300 bg-white rounded hover:bg-gray-50 hover:border-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="currentPage === totalPages"
+            @click="goToPage(currentPage + 1)"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
               <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
             </svg>
           </button>
         </div>
 
         <!-- Items per page selector -->
-        <div class="items-per-page">
-          <label for="perPage" class="text-sm text-gray-600">Items per page:</label>
+        <div class="flex items-center gap-2">
+          <label for="perPage" class="text-xs text-gray-600 whitespace-nowrap">Per page:</label>
           <select 
             id="perPage"
             v-model="itemsPerPage" 
             @change="handleItemsPerPageChange"
-            class="per-page-select"
+            class="px-2 py-1 text-xs border border-gray-300 rounded bg-white cursor-pointer focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100"
           >
-            <option value="8">8</option>
             <option value="12">12</option>
-            <option value="16">16</option>
             <option value="24">24</option>
+            <option value="36">36</option>
+            <option value="48">48</option>
           </select>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="menu md:hidden">
+  <div class="md:hidden">
     <TruckersBottomMenu />
   </div>
 </template>
@@ -135,7 +133,7 @@ import LoadModal from '~/components/LoadModal.vue'
 
 // Pagination state
 const currentPage = ref(1)
-const itemsPerPage = ref(8)
+const itemsPerPage = ref(12)
 
 // Enhanced mock data with complete load information
 const allLoads = ref([
@@ -277,7 +275,7 @@ const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
     // Scroll to top of cards
-    document.querySelector('.cards')?.scrollIntoView({ behavior: 'smooth' })
+    document.querySelector('.grid')?.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
@@ -313,151 +311,3 @@ const handleAcceptLoad = (load) => {
   closeModal()
 }
 </script>
-
-<style scoped>
-.results-info {
-  margin-bottom: 1rem;
-}
-
-.pagination-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.pagination-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid #e0e0e0;
-  background: white;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.pagination-btn:hover:not(.disabled) {
-  background: #f8f9fa;
-  border-color: #2196F3;
-}
-
-.pagination-btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.page-numbers {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.page-btn {
-  min-width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e0e0e0;
-  background: white;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.page-btn:hover {
-  background: #f8f9fa;
-  border-color: #2196F3;
-}
-
-.page-btn.active {
-  background: #2196F3;
-  border-color: #2196F3;
-  color: white;
-}
-
-.ellipsis {
-  padding: 0 0.5rem;
-  color: #666;
-  font-weight: 500;
-}
-
-.items-per-page {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.per-page-select {
-  padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  background: white;
-  cursor: pointer;
-}
-
-.per-page-select:focus {
-  outline: none;
-  border-color: #2196F3;
-  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .pagination-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .pagination {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .pagination-btn {
-    padding: 0.75rem 1rem;
-  }
-  
-  .page-btn {
-    min-width: 44px;
-    height: 44px;
-  }
-  
-  .items-per-page {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .page-numbers {
-    gap: 0.125rem;
-  }
-  
-  .page-btn {
-    min-width: 36px;
-    height: 36px;
-    font-size: 0.8rem;
-  }
-  
-  .pagination-btn {
-    font-size: 0.8rem;
-    padding: 0.5rem 0.75rem;
-  }
-}
-</style>

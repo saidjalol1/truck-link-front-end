@@ -1,108 +1,207 @@
 <template>
-  <div class="filter-container">
-    <!-- Mobile filter toggle button -->
+  <div class="w-full mb-4">
+    <!-- Compact Filter toggle button -->
     <button 
-      class="filter-toggle mobile-only"
+      class="flex items-center justify-center gap-2 w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors relative"
       @click="toggleFilters"
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
         <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
       </svg>
       Saralash
-      <span class="filter-count" v-if="activeFiltersCount > 0">{{ activeFiltersCount }}</span>
+      <span 
+        v-if="activeFiltersCount > 0" 
+        class="absolute -top-1 -right-1 bg-blue-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full min-w-[20px] text-center"
+      >
+        {{ activeFiltersCount }}
+      </span>
     </button>
 
-    <!-- Filter panel -->
-    <div class="filter-panel" :class="{ 'expanded': showFilters }">
-      <div class="filter-header desktop-only">
-        <h3>Filter Results</h3>
-        <button class="clear-filters" v-if="activeFiltersCount > 0">
-          Clear All
-        </button>
-      </div>
-
-      <!-- Mobile header -->
-      <div class="filter-header mobile-only">
-        <h3>Filters</h3>
-        <div class="mobile-header-actions">
-          <button class="clear-filters" v-if="activeFiltersCount > 0">Clear All</button>
-          <button class="close-filters" @click="toggleFilters">✕</button>
-        </div>
-      </div>
-
-      <div class="filter-grid">
-        <!-- Date Range Filter -->
-        <div class="filter-group">
-          <label>Qo'shilgan sana Bo'yicha</label>
-          <div class="date-inputs">
-            <input type="date" placeholder="From">
-            <input type="date" placeholder="To">
+    <!-- Compact Filter panel -->
+    <div 
+      class="fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 md:relative md:inset-auto md:bg-transparent md:z-auto"
+      :class="showFilters ? 'opacity-100' : 'opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto'"
+      @click="closeFiltersOnOverlay"
+    >
+      <div 
+        class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[85vh] overflow-y-auto transform transition-transform duration-300 md:relative md:bottom-auto md:rounded-xl md:max-h-none md:overflow-visible md:mt-2 md:border md:border-gray-200 md:shadow-sm"
+        :class="showFilters ? 'translate-y-0' : 'translate-y-full md:translate-y-0'"
+        @click.stop
+      >
+        <!-- Mobile header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-100 md:hidden">
+          <h3 class="text-lg font-semibold text-gray-900">Filters</h3>
+          <div class="flex items-center gap-3">
+            <button 
+              v-if="activeFiltersCount > 0"
+              @click="clearAllFilters"
+              class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Clear All
+            </button>
+            <button 
+              @click="toggleFilters"
+              class="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
           </div>
         </div>
 
-        <!-- Location Filters -->
-        <div class="filter-group">
-          <label>Qayerdan</label>
-          <select>
-            <option>All Cities</option>
-            <option>Chicago, IL</option>
-            <option>New York, NY</option>
-            <option>Los Angeles, CA</option>
-          </select>
+        <!-- Desktop clear button -->
+        <div 
+          v-if="activeFiltersCount > 0"
+          class="hidden md:flex justify-end p-3 pb-0"
+        >
+          <button 
+            @click="clearAllFilters"
+            class="text-sm text-gray-600 hover:text-gray-800 px-2 py-1 hover:bg-gray-50 rounded transition-colors"
+          >
+            Clear All
+          </button>
         </div>
 
-        <div class="filter-group">
-          <label>Qayerga</label>
-          <select>
-            <option>All Cities</option>
-            <option>Indianapolis, IN</option>
-            <option>Boston, MA</option>
-            <option>Miami, FL</option>
-          </select>
-        </div>
+        <!-- Compact Filter grid -->
+        <div class="p-4 md:p-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            <!-- Date Range Filter -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Qo'shilgan sana</label>
+              <div class="flex gap-2">
+                <input 
+                  type="date" 
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="From"
+                >
+                <input 
+                  type="date" 
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="To"
+                >
+              </div>
+            </div>
 
-        <!-- Weight Range Filter -->
-        <div class="filter-group">
-          <label>Og'irlik (lbs)</label>
-          <div class="weight-inputs">
-            <input type="number" placeholder="Min">
-            <input type="number" placeholder="Max">
+            <!-- Location From -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Qayerdan</label>
+              <select class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                <option>All Cities</option>
+                <option>Chicago, IL</option>
+                <option>New York, NY</option>
+                <option>Los Angeles, CA</option>
+              </select>
+            </div>
+
+            <!-- Location To -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Qayerga</label>
+              <select class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                <option>All Cities</option>
+                <option>Indianapolis, IN</option>
+                <option>Boston, MA</option>
+                <option>Miami, FL</option>
+              </select>
+            </div>
+
+            <!-- Weight Range -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Og'irlik (lbs)</label>
+              <div class="flex gap-2">
+                <input 
+                  type="number" 
+                  placeholder="Min"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <input 
+                  type="number" 
+                  placeholder="Max"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+              </div>
+            </div>
+
+            <!-- Vehicle Type -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Mashina turi</label>
+              <div class="space-y-1.5">
+                <label class="flex items-center gap-2 text-xs cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="w-3 h-3 text-blue-600 border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                  >
+                  <span class="text-gray-700">Van</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="w-3 h-3 text-blue-600 border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                  >
+                  <span class="text-gray-700">Truck</span>
+                </label>
+                <label class="flex items-center gap-2 text-xs cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="w-3 h-3 text-blue-600 border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                  >
+                  <span class="text-gray-700">Semi</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="space-y-2 sm:col-span-2 lg:col-span-1">
+              <label class="block text-xs font-medium text-gray-700">Narx ($)</label>
+              <div class="flex gap-2">
+                <input 
+                  type="number" 
+                  placeholder="Min"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <input 
+                  type="number" 
+                  placeholder="Max"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+              </div>
+            </div>
+
+            <!-- Distance Range -->
+            <div class="space-y-2">
+              <label class="block text-xs font-medium text-gray-700">Masofa (mi)</label>
+              <div class="flex gap-2">
+                <input 
+                  type="number" 
+                  placeholder="Min"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+                <input 
+                  type="number" 
+                  placeholder="Max"
+                  class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                >
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Vehicle Type Filter -->
-        <div class="filter-group">
-          <label>Mashina turi</label>
-          <div class="checkbox-group">
-            <label class="checkbox-label">
-              <input type="checkbox">
-              <span class="checkmark"></span>
-              Van
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox">
-              <span class="checkmark"></span>
-              Truck
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox">
-              <span class="checkmark"></span>
-              Semi
-            </label>
-          </div>
+        <!-- Mobile apply button -->
+        <div class="p-4 pt-0 border-t border-gray-100 md:hidden">
+          <button 
+            @click="applyFilters"
+            class="w-full bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors"
+          >
+            Apply Filters
+          </button>
         </div>
-      </div>
-
-      <!-- Apply button for mobile -->
-      <div class="filter-actions mobile-only">
-        <button class="apply-filters">Apply Filters</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 const showFilters = ref(false)
 const activeFiltersCount = ref(2) // Mock active filter count
@@ -110,234 +209,22 @@ const activeFiltersCount = ref(2) // Mock active filter count
 const toggleFilters = () => {
   showFilters.value = !showFilters.value
 }
+
+const closeFiltersOnOverlay = (event) => {
+  if (event.target === event.currentTarget) {
+    showFilters.value = false
+  }
+}
+
+const clearAllFilters = () => {
+  activeFiltersCount.value = 0
+  // Add logic to clear all filter values
+  console.log('Clearing all filters')
+}
+
+const applyFilters = () => {
+  showFilters.value = false
+  // Add logic to apply filters
+  console.log('Applying filters')
+}
 </script>
-
-<style scoped>
-.filter-container {
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-.filter-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  width: 100%;
-  justify-content: center;
-  position: relative;
-}
-
-.filter-toggle:hover {
-  background: #f8f9fa;
-}
-
-.filter-count {
-  background: #2196F3;
-  color: white;
-  border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 12px;
-  font-weight: 600;
-  min-width: 20px;
-  text-align: center;
-}
-
-.filter-panel {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.filter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.filter-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.mobile-header-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.clear-filters, .close-filters, .apply-filters {
-  background: none;
-  border: 1px solid #e0e0e0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #666;
-}
-
-.clear-filters:hover, .close-filters:hover {
-  background: #f8f9fa;
-}
-
-.apply-filters {
-  background: #2196F3;
-  color: white;
-  border-color: #2196F3;
-  width: 100%;
-  padding: 14px;
-  font-weight: 500;
-}
-
-.apply-filters:hover {
-  background: #1976D2;
-}
-
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filter-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-.filter-group input, .filter-group select {
-  padding: 10px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  background: white;
-}
-
-.filter-group input:focus, .filter-group select:focus {
-  outline: none;
-  border-color: #2196F3;
-  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
-}
-
-.date-inputs, .weight-inputs, .price-inputs {
-  display: flex;
-  gap: 8px;
-}
-
-.date-inputs input, .weight-inputs input, .price-inputs input {
-  flex: 1;
-}
-
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 4px 0;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-}
-
-.filter-actions {
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  .mobile-only {
-    display: block;
-  }
-
-  .desktop-only {
-    display: none;
-  }
-
-  .filter-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    border-radius: 0;
-    margin: 0;
-    max-height: 100vh;
-    overflow-y: auto;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-  }
-
-  .filter-panel.expanded {
-    transform: translateY(0);
-  }
-
-  .filter-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .date-inputs, .weight-inputs, .price-inputs {
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
-/* Desktop styles */
-@media (min-width: 769px) {
-  .mobile-only {
-    display: none;
-  }
-
-  .desktop-only {
-    display: flex;
-  }
-
-  .filter-panel {
-    display: block !important;
-  }
-
-  .filter-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .filter-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-</style>
