@@ -54,7 +54,7 @@ const login = async () =>{
     
     delay_load()
     localStorage.setItem("truckLink", res["access_token"])
-    router.push("/dashboard")
+    router.push(`${res["user"]["role"]}`)
 
   } catch (error) {
     error.value = error

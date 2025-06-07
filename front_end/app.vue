@@ -16,7 +16,7 @@ onMounted(() => {
   
   if (token) {
     localStorage.setItem("truckLink", token)
-    router.push("/dashboard")
+    router.push("/")
   } else if (error) {
     alert(`${error}`)
     router.push("/auth")

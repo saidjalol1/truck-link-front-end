@@ -10,5 +10,6 @@
     min-width:360px ;
 }
 body{
+    height: 100vh;
     background-color: #f1f1f3;
 }

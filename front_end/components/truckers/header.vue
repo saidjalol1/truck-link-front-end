@@ -1,4 +1,5 @@
 <script setup>
+const router = useRouter()
 const profile = ref(false)
 
 const profileBlock = () =>{
@@ -11,12 +12,14 @@ function getLimitedFullName(name, surname, maxLength = 10) {
     ? fullName.slice(0, maxLength).trim() + '…'
     : fullName;
 }
+
+const logout = () =>{
+    localStorage.removeItem("truckLink")
+    router.push("/auth")
+}
+
 </script>
 <template>
-    <div class="flex">
-        <div class="hidden md:block lg:block">
-            <TruckersSidebarMenu />
-        </div>
         <div class="header py-4 px-5 flex items-center flex-1 justify-between md:justify-end shadow gap-4">
             <div class="logotip block md:hidden lg:hidded">
                 <NuxtImg  src="images/ChatGPT Image May 17, 2025, 06_06_51 PM.png"/>
@@ -28,7 +31,7 @@ function getLimitedFullName(name, surname, maxLength = 10) {
                 </div>
             </div>
         </div>
-    </div>
+
     <div v-if="profile" class="profile-drop shadow rounded text-gray-300">
         <div class="block-1 flex items-center gap-4 p-4 hover:bg-gray-100 cursor-pointer">
             <div class="text-gray-400 font-bold text-xs">
@@ -46,7 +49,7 @@ function getLimitedFullName(name, surname, maxLength = 10) {
                 Tahrirlash
             </div>
         </div>
-        <div class="block-1 flex items-center gap-4 p-2 px-4 hover:bg-gray-100 cursor-pointer">
+        <div @click="logout" class="block-1 flex items-center gap-4 p-2 px-4 hover:bg-gray-100 cursor-pointer">
             <div class="cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
@@ -106,5 +109,6 @@ img{
     top: 73px;
     right: 20px;
     background-color: white;
+    z-index: 1000;
 }
 </style>

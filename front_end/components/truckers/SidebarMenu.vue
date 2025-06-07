@@ -59,7 +59,7 @@ const activeIndex = ref(0)
 <style scoped>
 .menu{
     background-color: white;
-    height: 100vh;
+    height: 100%;
 }
 .logo{
     background-color: #f1f1f3;
