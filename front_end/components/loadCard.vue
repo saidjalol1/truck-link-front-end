@@ -1,5 +1,5 @@
 <template>
-  <div class="load-card flex-1" @click="$emit('click', load)">
+  <div class="load-card " @click="$emit('click', load)">
     <!-- Header with Load ID and Posted Time -->
     <div class="card-header">
       <span class="load-id">{{ load.loadId }}</span>
@@ -102,7 +102,7 @@ defineEmits(['click'])
   border: 1px solid #f0f0f0;
   cursor: pointer;
   transition: all 0.3s ease;
-  width: 450px;
+
 }
 
 .load-card:hover {
