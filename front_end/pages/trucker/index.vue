@@ -127,9 +127,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import Filtration from '~/components/filtration.vue'
-import LoadCard from '~/components/LoadCard.vue'
-import LoadModal from '~/components/LoadModal.vue'
+
 
 // Pagination state
 const currentPage = ref(1)
