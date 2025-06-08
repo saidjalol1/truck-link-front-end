@@ -280,7 +280,7 @@ const goToPage = (page) => {
 }
 
 const handleItemsPerPageChange = () => {
-  currentPage.value = 1 // Reset to first page when changing items per page
+  currentPage.value = 1 
 }
 
 // Watch for changes that might affect pagination

@@ -345,6 +345,7 @@ defineEmits(['click'])
     align-items: stretch;
   }
   
+  
   .view-details-btn {
     justify-content: center;
   }
