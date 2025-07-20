@@ -31,7 +31,7 @@ const activeIndex = ref(0)
                         <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
                     </svg>
                 </div>
-                <div class="text text-xs mt-1 hover:text-blue-400">Tarix</div>
+                <div class="text text-xs mt-1 hover:text-blue-400">Buyurtmalar</div>
             </div>
             <div class="item px-2 py-2  rounded-lg flex flex-col items-center cursor-pointer hover:text-blue-600"
                 :class="{'bg-gray-100 text-blue-600': activeIndex === 2}" @click="activeIndex = 2">

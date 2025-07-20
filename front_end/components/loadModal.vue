@@ -364,7 +364,6 @@ watch(() => props.isOpen, (isOpen) => {
 .route-container {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
 .location-card {
